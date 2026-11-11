@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabiat Mo'jizalari - Ekologik Portali</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        forest: {
+                            dark: '#0a1c13',
+                            card: '#122b1e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Glassmorphism Effect */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glassmorphism {
+            background: rgba(18, 43, 30, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0a1c13;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+
+        /* Hero Wave Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* 3D Flip Card */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Wave SVG Background */
+        .hero-bg {
+            background-image: linear-gradient(135deg, rgba(6, 78, 59, 0.85), rgba(4, 120, 87, 0.75)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-forest-dark dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphism transition-all duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fa-solid font-bold fa-leaf text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Tabiat<span class="text-emerald-500">Ochig'i</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#hero" class="hover:text-emerald-500 transition-colors">Bosh sahifa</a>
+                <a href="#gallery" class="hover:text-emerald-500 transition-colors">Galereya</a>
+                <a href="#soundscape" class="hover:text-emerald-500 transition-colors">Tabiat Tovushlari</a>
+                <a href="#facts" class="hover:text-emerald-500 transition-colors">Faktlar & Maslahatlar</a>
+                <a href="#quiz" class="hover:text-emerald-500 transition-colors">Viktorina</a>
+            </nav>
+
+            <!-- Actions (Theme Toggle & Mobile Menu Btn) -->
+            <div class="flex items-center gap-4">
+                <!-- Dark Mode Toggle -->
+                <button id="themeToggle" class="p-2.5 rounded-full bg-slate-200 dark:bg-emerald-900/40 text-slate-700 dark:text-emerald-300 hover:bg-slate-300 dark:hover:bg-emerald-800/50 transition-colors" title="Mavzuni o'zgartirish">
+                    <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-700 dark:text-slate-200">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden glassmorphism border-t border-slate-200 dark:border-emerald-800/30 px-4 pt-2 pb-6 space-y-3">
+            <a href="#hero" class="block py-2 text-slate-800 dark:text-slate-200 font-medium hover:text-emerald-500">Bosh sahifa</a>
+            <a href="#gallery" class="block py-2 text-slate-800 dark:text-slate-200 font-medium hover:text-emerald-500">Galereya</a>
+            <a href="#soundscape" class="block py-2 text-slate-800 dark:text-slate-200 font-medium hover:text-emerald-500">Tabiat Tovushlari</a>
+            <a href="#facts" class="block py-2 text-slate-800 dark:text-slate-200 font-medium hover:text-emerald-500">Faktlar & Maslahatlar</a>
+            <a href="#quiz" class="block py-2 text-slate-800 dark:text-slate-200 font-medium hover:text-emerald-500">Viktorina</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-20">
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="relative hero-bg text-white min-h-[90vh] flex items-center justify-center text-center px-4 overflow-hidden">
+            <div class="relative z-10 max-w-4xl mx-auto space-y-6 animate-float">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-sm font-semibold tracking-wide uppercase">
+                    <i class="fa-solid fa-seedling mr-2"></i>Bizning Sayyoramizni Asraylik
+                </span>
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                    Tabiatning Go'zalligi va <br class="hidden sm:inline">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">Sehrli Dunyosi</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
+                    O'rmonlarning tinchlantiruvchi bag'ri, ummonlarning chuqurligi va tog'larning purviqorligini kashf eting. Sayyoramiz bilan uyg'unlikda yashashni o'rganing.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <a href="#gallery" class="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-lg hover:shadow-emerald-500/30 transition-all transform hover:-translate-y-1">
+                        Sayohatni Boshlash <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#soundscape" class="px-8 py-4 rounded-xl glassmorphism hover:bg-white/20 text-white font-semibold transition-all transform hover:-translate-y-1">
+                        Ovozli Terapiya <i class="fa-solid fa-volume-high ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Decorative Bottom Wave -->
+            <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-none z-0">
+                <svg class="relative block w-full h-12 sm:h-20 text-slate-50 dark:text-forest-dark" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.92,152.47,126.24,240,111.41Z" fill="currentColor"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- 2. Interactive Nature Gallery -->
+        <section id="gallery" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Tabiat Galereyasi</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Sayyoramizning turli go'shalaridagi mo'jizalarni toifa bo'yicha saralab tomosha qiling.</p>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 pt-4" id="galleryFilters">
+                    <button data-filter="all" class="filter-btn active px-5 py-2.5 rounded-full font-medium text-sm bg-emerald-600 text-white shadow-md transition-all">Barchasi</button>
+                    <button data-filter="forests" class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm bg-slate-200 dark:bg-forest-card text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-all">O'rmonlar</button>
+                    <button data-filter="mountains" class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm bg-slate-200 dark:bg-forest-card text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-all">Tog'lar</button>
+                    <button data-filter="oceans" class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm bg-slate-200 dark:bg-forest-card text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-all">Ummonlar</button>
+                    <button data-filter="wildlife" class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm bg-slate-200 dark:bg-forest-card text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-all">Hayvonot Olamidan</button>
+                </div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="galleryGrid">
+                <!-- Dynamic Items Inserted via JS -->
+            </div>
+        </section>
+
+        <!-- 3. Ambient Soundscape Generator (Web Audio API) -->
+        <section id="soundscape" class="py-20 px-4 bg-emerald-900/10 dark:bg-emerald-950/30 relative">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center space-y-4 mb-16">
+                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-semibold uppercase tracking-wider">Web Audio Sintizator</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Relaksatsiya va Tabiat Tovushlari</h2>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Tinchlaning va dam oling. Web Audio texnologiyasi yordamida jonli ravishda yaratiladigan tabiat tovushlarini tinglang.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Rain Generator Card -->
+                    <div class="glassmorphism p-6 rounded-2xl flex flex-col items-center text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-cloud-showers-heavy"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Yomg'ir Shivali</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Yumshoq va tinchlantiruvchi yomg'ir ovozi</p>
+                        <button class="sound-toggle-btn w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2" data-sound="rain">
+                            <i class="fa-solid fa-play"></i> <span>Ijro etish</span>
+                        </button>
+                        <div class="w-full space-y-1">
+                            <label class="text-xs text-slate-500 dark:text-slate-400">Ovoz balandligi</label>
+                            <input type="range" min="0" max="1" step="0.01" value="0.5" class="sound-volume w-full accent-emerald-500" data-sound="rain">
+                        </div>
+                    </div>
+
+                    <!-- Wind Generator Card -->
+                    <div class="glassmorphism p-6 rounded-2xl flex flex-col items-center text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-wind"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">O'rmon Shamoli</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Daraxtlar orasidan esuvchi mayin shabada</p>
+                        <button class="sound-toggle-btn w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2" data-sound="wind">
+                            <i class="fa-solid fa-play"></i> <span>Ijro etish</span>
+                        </button>
+                        <div class="w-full space-y-1">
+                            <label class="text-xs text-slate-500 dark:text-slate-400">Ovoz balandligi</label>
+                            <input type="range" min="0" max="1" step="0.01" value="0.5" class="sound-volume w-full accent-emerald-500" data-sound="wind">
+                        </div>
+                    </div>
+
+                    <!-- Ocean Waves Card -->
+                    <div class="glassmorphism p-6 rounded-2xl flex flex-col items-center text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Dengiz To'lqinlari</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Qirg'oqqa urilayotgan ritmik to'lqinlar</p>
+                        <button class="sound-toggle-btn w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2" data-sound="waves">
+                            <i class="fa-solid fa-play"></i> <span>Ijro etish</span>
+                        </button>
+                        <div class="w-full space-y-1">
+                            <label class="text-xs text-slate-500 dark:text-slate-400">Ovoz balandligi</label>
+                            <input type="range" min="0" max="1" step="0.01" value="0.5" class="sound-volume w-full accent-emerald-500" data-sound="waves">
+                        </div>
+                    </div>
+
+                    <!-- Birds Chanting Card -->
+                    <div class="glassmorphism p-6 rounded-2xl flex flex-col items-center text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-crow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Qushlar Sayrashi</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Erta tonggi qushlarning mayin ovozi</p>
+                        <button class="sound-toggle-btn w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2" data-sound="birds">
+                            <i class="fa-solid fa-play"></i> <span>Ijro etish</span>
+                        </button>
+                        <div class="w-full space-y-1">
+                            <label class="text-xs text-slate-500 dark:text-slate-400">Ovoz balandligi</label>
+                            <input type="range" min="0" max="1" step="0.01" value="0.5" class="sound-volume w-full accent-emerald-500" data-sound="birds">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Fact Cards & Eco Tips (Flip Animation) -->
+        <section id="facts" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Qiziqarli Faktlar & Ekologik Maslahatlar</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Kartaning orqa tomonidagi sirli ma'lumotlar va foydali ekologik maslahatni ko'rish uchun ularni bosing.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="flip-card h-80 perspective-1000 cursor-pointer">
+                    <div class="flip-card-inner relative w-full h-full transform-style-3d shadow-lg rounded-2xl">
+                        <!-- Front -->
+                        <div class="flip-card-front absolute w-full h-full backface-hidden glassmorphism p-8 rounded-2xl flex flex-col justify-between items-start border border-emerald-500/20">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-tree"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">O'rmonlar</span>
+                                <h3 class="text-2xl font-bold mt-1">Daraxtlarning Kuchi</h3>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Kartani aylantirish uchun bosing <i class="fa-solid fa-rotate-right ml-1"></i></p>
+                        </div>
+                        <!-- Back -->
+                        <div class="flip-card-back absolute w-full h-full backface-hidden rotate-y-180 bg-emerald-600 text-white p-8 rounded-2xl flex flex-col justify-between">
+                            <h4 class="text-lg font-bold">Bilar edingizmi?</h4>
+                            <p class="text-sm leading-relaxed">Bir tub katta daraxt yiliga taxminan 22 kg karbonat angidrid gazini yutadi va 4 kishilik oilaga yetadigan kislorod ishlab chiqaradi!</p>
+                            <div class="pt-4 border-t border-emerald-400/40 text-xs">
+                                <strong>Ekologik Maslahat:</strong> Qog'oz iste'molini kamaytiring va imkon qadar raqamli hujjatlardan foydalaning.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-card h-80 perspective-1000 cursor-pointer">
+                    <div class="flip-card-inner relative w-full h-full transform-style-3d shadow-lg rounded-2xl">
+                        <!-- Front -->
+                        <div class="flip-card-front absolute w-full h-full backface-hidden glassmorphism p-8 rounded-2xl flex flex-col justify-between items-start border border-emerald-500/20">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Suv Manbalari</span>
+                                <h3 class="text-2xl font-bold mt-1">Obi Hayot</h3>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Kartani aylantirish uchun bosing <i class="fa-solid fa-rotate-right ml-1"></i></p>
+                        </div>
+                        <!-- Back -->
+                        <div class="flip-card-back absolute w-full h-full backface-hidden rotate-y-180 bg-blue-600 text-white p-8 rounded-2xl flex flex-col justify-between">
+                            <h4 class="text-lg font-bold">Bilar edingizmi?</h4>
+                            <p class="text-sm leading-relaxed">Er yuzidagi suvning faqat 2.5% qismi chuchuk suv hisoblanadi. Uning ham 68% dan ortig'i muzliklarda muzlagan holatda.</p>
+                            <div class="pt-4 border-t border-blue-400/40 text-xs">
+                                <strong>Ekologik Maslahat:</strong> Tish yuvayotganda kran suvini o'chirib qo'yish orqali daqiqasiga 6 litrgacha suvni tejashingiz mumkin.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-card h-80 perspective-1000 cursor-pointer">
+                    <div class="flip-card-inner relative w-full h-full transform-style-3d shadow-lg rounded-2xl">
+                        <!-- Front -->
+                        <div class="flip-card-front absolute w-full h-full backface-hidden glassmorphism p-8 rounded-2xl flex flex-col justify-between items-start border border-emerald-500/20">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-recycle"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-amber-600 uppercase tracking-wider">Chiqindi & Plastik</span>
+                                <h3 class="text-2xl font-bold mt-1">Plastik Ta'siri</h3>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Kartani aylantirish uchun bosing <i class="fa-solid fa-rotate-right ml-1"></i></p>
+                        </div>
+                        <!-- Back -->
+                        <div class="flip-card-back absolute w-full h-full backface-hidden rotate-y-180 bg-amber-600 text-white p-8 rounded-2xl flex flex-col justify-between">
+                            <h4 class="text-lg font-bold">Bilar edingizmi?</h4>
+                            <p class="text-sm leading-relaxed">Bir dona plastik idishning (yoki paketning) tabiatda to'liq parchalanishi uchun 450 yildan ortiq vaqt talab etiladi.</p>
+                            <div class="pt-4 border-t border-amber-400/40 text-xs">
+                                <strong>Ekologik Maslahat:</strong> Xaridlar uchun bir martalik yelim xaltalar o'rniga ko'p martalik matoli xaltalardan (ekobag) foydalaning.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Interactive Eco Quiz Widget -->
+        <section id="quiz" class="py-20 px-4 bg-emerald-900/10 dark:bg-emerald-950/30">
+            <div class="max-w-3xl mx-auto glassmorphism rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+                <div class="text-center space-y-3 mb-8">
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-semibold uppercase tracking-wider">Bilimingizni sinang</span>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Kunlik Ekologik Viktorina</h2>
+                </div>
+
+                <div id="quizContainer" class="space-y-6">
+                    <!-- Dynamic Question Area -->
+                    <div id="questionBox" class="space-y-4">
+                        <h3 id="questionText" class="text-xl font-semibold text-slate-800 dark:text-slate-100">Savol yuklanmoqda...</h3>
+                        <div id="answersGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Buttons loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Result Alert -->
+                    <div id="quizResult" class="hidden p-4 rounded-xl text-center font-medium"></div>
+
+                    <!-- Next Button -->
+                    <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700/50">
+                        <button id="nextQuizBtn" class="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors hidden">
+                            Keyingi savol <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-4 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <span class="text-lg font-bold text-white">Tabiat Ochig'i</span>
+                </div>
+                <p class="text-sm font-light">Tabiatni anglash, ekologik madaniyatni yuksaltirish va sayyoramiz kelajagiga befarq bo'lmaslik uchun yaratilgan platforma.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Tezkor Havolalar</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#hero" class="hover:text-emerald-400 transition-colors">Bosh sahifa</a></li>
+                    <li><a href="#gallery" class="hover:text-emerald-400 transition-colors">Fotogalereya</a></li>
+                    <li><a href="#soundscape" class="hover:text-emerald-400 transition-colors">Relaksatsiya Ovozlar</a></li>
+                    <li><a href="#facts" class="hover:text-emerald-400 transition-colors">Faktlar</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Ekologik Shior</h4>
+                <blockquote class="italic text-sm border-l-2 border-emerald-500 pl-4 py-1">
+                    "Biz yer sharini ota-bobolarimizdan meros qilib olmaganmiz, uni kelajak avloddan qarzga olganmiz."
+                </blockquote>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-6 border-t border-slate-800 text-center text-xs">
+            <p>&copy; 2026 Tabiat Ochig'i. Barcha huquqlar himoyalangan. Vanilla JS & Tailwind CSS bilan yaratildi.</p>
+        </div>
+    </footer>
+
+    <!-- Vanilla JavaScript Logic -->
+    <script>
+        /* ----------------------------------------------------
+           1. Dynamic Theme Switcher (Dark/Light Mode)
+        ---------------------------------------------------- */
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+
+        /* ----------------------------------------------------
+           2. Mobile Navigation Menu Toggle
+        ---------------------------------------------------- */
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        /* ----------------------------------------------------
+           3. Gallery Data & Dynamic Filtering
+        ---------------------------------------------------- */
+        const galleryData = [
+            {
+                title: "Zümrad O'rmonlar",
+                category: "forests",
+                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+                description: "Zich va yashil daraxtlar o'rmon havosiga toza kislorod ulashadi."
+            },
+            {
+                title: "Tog' Cho'qqilari",
+                category: "mountains",
+                image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+                description: "Muhtasham tog'lar va qorli cho'qqilarning salobati."
+            },
+            {
+                title: "Tinch Okean",
+                category: "oceans",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+                description: "Mavj urayotgan tip-tiniq zangori ummon suvlari."
+            },
+            {
+                title: "Yovvoyi Kiyik",
+                category: "wildlife",
+                image: "https://images.unsplash.com/photo-1484406566174-9da000fda645?auto=format&fit=crop&w=800&q=80",
+                description: "Erkin tabiat qo'ynidagi go'zal hayvonot olami."
+            },
+            {
+                title: "Kuzgi O'rmon Yo'li",
+                category: "forests",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+                description: "Oltin kuz faslining jozibali manzarasi."
+            },
+            {
+                title: "Tropik Oroldagi To'lqinlar",
+                category: "oceans",
+                image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
+                description: "Sokin suv osti dunyosi va marjon qoyalar."
+            }
+        ];
+
+        const galleryGrid = document.getElementById('galleryGrid');
+        const filterButtons = document.querySelectorAll('#galleryFilters .filter-btn');
+
+        function renderGallery(filter = 'all') {
+            galleryGrid.innerHTML = '';
+            const filteredItems = filter === 'all' ? galleryData : galleryData.filter(item => item.category === filter);
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glassmorphism rounded-2xl overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col";
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-52">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">${item.category}</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">${item.title}</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+                galleryGrid.appendChild(card);
+            });
+        }
+
+        // Filter Button Clicks
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-emerald-600', 'text-white');
+                    b.classList.add('bg-slate-200', 'dark:bg-forest-card', 'text-slate-700', 'dark:text-slate-300');
+                });
+                btn.classList.add('bg-emerald-600', 'text-white');
+                btn.classList.remove('bg-slate-200', 'dark:bg-forest-card', 'text-slate-700', 'dark:text-slate-300');
+
+                renderGallery(btn.getAttribute('data-filter'));
+            });
+        });
+
+        renderGallery();
+
+        /* ----------------------------------------------------
+           4. Web Audio Synthesizer (Ambient Nature Sounds)
+        ---------------------------------------------------- */
+        let audioCtx = null;
+
+        // Custom Web Audio Sound Generators
+        const soundEngines = {
+            rain: { node: null, gain: null, isPlaying: false },
+            wind: { node: null, gain: null, isPlaying: false },
+            waves: { node: null, gain: null, isPlaying: false },
+            birds: { timer: null, gain: null, isPlaying: false }
+        };
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // White/Pink Noise Generator for Rain & Waves
+        function createNoiseBuffer() {
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            return buffer;
+        }
+
+        // Sound Toggles Logic
+        function toggleSound(soundType, volumeValue) {
+            initAudioContext();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const sound = soundEngines[soundType];
+
+            if (sound.isPlaying) {
+                stopSound(soundType);
+            } else {
+                playSound(soundType, volumeValue);
+            }
+        }
+
+        function playSound(type, vol) {
+            const sound = soundEngines[type];
+            sound.isPlaying = true;
+
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gainNode.connect(audioCtx.destination);
+            sound.gain = gainNode;
+
+            if (type === 'rain') {
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = createNoiseBuffer();
+                whiteNoise.loop = true;
+
+                // Lowpass Filter for soft rain sound
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+
+                whiteNoise.connect(filter);
+                filter.connect(gainNode);
+                whiteNoise.start();
+                sound.node = whiteNoise;
+
+            } else if (type === 'wind') {
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = createNoiseBuffer();
+                whiteNoise.loop = true;
+
+                // Bandpass Filter with LFO for whistling wind effect
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+                filter.Q.setValueAtTime(3, audioCtx.currentTime);
+
+                // LFO to modulate frequency
+                const lfo = audioCtx.createOscillator();
+                lfo.frequency.setValueAtTime(0.2, audioCtx.currentTime);
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.setValueAtTime(300, audioCtx.currentTime);
+                lfo.connect(lfoGain);
+                lfoGain.connect(filter.frequency);
+                lfo.start();
+
+                whiteNoise.connect(filter);
+                filter.connect(gainNode);
+                whiteNoise.start();
+                sound.node = whiteNoise;
+
+            } else if (type === 'waves') {
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = createNoiseBuffer();
+                whiteNoise.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+                // LFO to simulate wave swell
+                const lfo = audioCtx.createOscillator();
+                lfo.frequency.setValueAtTime(0.1, audioCtx.currentTime);
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                lfo.connect(lfoGain);
+                lfoGain.connect(gainNode.gain);
+                lfo.start();
+
+                whiteNoise.connect(filter);
+                filter.connect(gainNode);
+                whiteNoise.start();
+                sound.node = whiteNoise;
+
+            } else if (type === 'birds') {
+                // Synthesize procedural bird chirps periodically
+                function chirp() {
+                    if (!sound.isPlaying) return;
+                    const osc = audioCtx.createOscillator();
+                    const chirpGain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    const startTime = audioCtx.currentTime;
+                    const duration = 0.1 + Math.random() * 0.15;
+                    const startFreq = 2000 + Math.random() * 1500;
+
+                    osc.frequency.setValueAtTime(startFreq, startTime);
+                    osc.frequency.exponentialRampToValueAtTime(startFreq + 800, startTime + duration);
+
+                    chirpGain.gain.setValueAtTime(0.01, startTime);
+                    chirpGain.gain.linearRampToValueAtTime(vol * 0.3, startTime + 0.02);
+                    chirpGain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                    osc.connect(chirpGain);
+                    chirpGain.connect(audioCtx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + duration);
+
+                    const nextChirp = Math.random() * 2000 + 500;
+                    sound.timer = setTimeout(chirp, nextChirp);
+                }
+                chirp();
+            }
+        }
+
+        function stopSound(type) {
+            const sound = soundEngines[type];
+            sound.isPlaying = false;
+            if (sound.node) {
+                try { sound.node.stop(); } catch(e){}
+                sound.node = null;
+            }
+            if (sound.timer) {
+                clearTimeout(sound.timer);
+                sound.timer = null;
+            }
+        }
+
+        // Event Listeners for Audio Controls
+        document.querySelectorAll('.sound-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const soundType = btn.getAttribute('data-sound');
+                const slider = document.querySelector(`.sound-volume[data-sound="${soundType}"]`);
+                const isPlaying = soundEngines[soundType].isPlaying;
+
+                toggleSound(soundType, parseFloat(slider.value));
+
+                if (!isPlaying) {
+                    btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+                    btn.classList.add('bg-red-500', 'hover:bg-red-600');
+                    btn.querySelector('span').innerText = "To'xtatish";
+                    btn.querySelector('i').className = "fa-solid fa-pause";
+                } else {
+                    btn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    btn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                    btn.querySelector('span').innerText = "Ijro etish";
+                    btn.querySelector('i').className = "fa-solid fa-play";
+                }
+            });
+        });
+
+        document.querySelectorAll('.sound-volume').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const soundType = slider.getAttribute('data-sound');
+                if (soundEngines[soundType].gain && soundEngines[soundType].isPlaying) {
+                    soundEngines[soundType].gain.gain.setValueAtTime(parseFloat(slider.value), audioCtx.currentTime);
+                }
+            });
+        });
+
+        /* ----------------------------------------------------
+           5. Card Flip Interactive Animation
+        ---------------------------------------------------- */
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const inner = card.querySelector('.flip-card-inner');
+                inner.classList.toggle('rotate-y-180');
+            });
+        });
+
+        /* ----------------------------------------------------
+           6. Daily Eco Quiz System
+        ---------------------------------------------------- */
+        const quizQuestions = [
+            {
+                question: "Sayyoramizdagi kislorodning eng katta qismini nima ishlab chiqaradi?",
+                answers: ["Daraxtlar va o'rmonlar", "Okean fitoplanktonlari", "O'tloqlar va maysalar", "Muzliklar"],
+                correct: 1
+            },
+            {
+                question: "Plastik shisha tabiatda to'liq parchalanishi uchun qancha vaqt ketadi?",
+                answers: ["50 yil", "100 yil", "450 yildan ortiq", "10000 yil"],
+                correct: 2
+            },
+            {
+                question: "Qaysi harakat suvni eng ko'p tejashga yordam beradi?",
+                answers: ["Tish yuvayotganda kranni o'chirish", "Idishlarni qo'lda yuvish", "Kiyimlarni har kuni yuvish", "Gullarni tushda sug'orish"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        const questionText = document.getElementById('questionText');
+        const answersGrid = document.getElementById('answersGrid');
+        const quizResult = document.getElementById('quizResult');
+        const nextQuizBtn = document.getElementById('nextQuizBtn');
+
+        function loadQuestion() {
+            quizResult.classList.add('hidden');
+            nextQuizBtn.classList.add('hidden');
+            answersGrid.innerHTML = '';
+
+            const current = quizQuestions[currentQuestionIndex];
+            questionText.innerText = `${currentQuestionIndex + 1}. ${current.question}`;
+
+            current.answers.forEach((ans, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl glassmorphism border border-slate-200 dark:border-slate-700/50 hover:bg-emerald-500/20 hover:border-emerald-500 font-medium transition-all text-sm";
+                btn.innerText = ans;
+                btn.addEventListener('click', () => checkAnswer(idx, btn));
+                answersGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            const current = quizQuestions[currentQuestionIndex];
+            const buttons = answersGrid.querySelectorAll('button');
+
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === current.correct) {
+                selectedBtn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-700', 'dark:text-emerald-400');
+                quizResult.innerText = "To'g'ri javob! Baraka topsin, siz haqiqiy tabiat hifzchisiz! 🎉";
+                quizResult.className = "p-4 rounded-xl text-center font-medium bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30";
+            } else {
+                selectedBtn.classList.add('bg-red-500/20', 'border-red-500', 'text-red-700', 'dark:text-red-400');
+                buttons[current.correct].classList.add('bg-emerald-500/20', 'border-emerald-500');
+                quizResult.innerText = "Afsuski, noto'g'ri javob. To'g mezon belgilandi.";
+                quizResult.className = "p-4 rounded-xl text-center font-medium bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30";
+            }
+
+            quizResult.classList.remove('hidden');
+            nextQuizBtn.classList.remove('hidden');
+        }
+
+        nextQuizBtn.addEventListener('click', () => {
+            currentQuestionIndex = (currentQuestionIndex + 1) % quizQuestions.length;
+            loadQuestion();
+        });
+
+        // Load Initial Question
+        loadQuestion();
+    </script>
+</body>
+</html>
